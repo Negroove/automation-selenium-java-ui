@@ -28,18 +28,21 @@
     </dependency>
 
     <!-- Test NG -->
+   <!-- https://mvnrepository.com/artifact/org.testng/testng -->
     <dependency>
     <groupId>org.testng</groupId>
     <artifactId>testng</artifactId>
     <version>7.10.2</version>
-    <scope>test</scope>
+    <scope>src</scope>
     </dependency>
+
 
     <!-- WebDriverManager -->
     <dependency>
     <groupId>io.github.bonigarcia</groupId>
     <artifactId>webdrivermanager</artifactId>
     <version>5.9.2</version>
+    <scope>src</scope>
     </dependency>
 
     
