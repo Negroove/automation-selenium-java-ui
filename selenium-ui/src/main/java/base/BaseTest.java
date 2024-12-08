@@ -17,7 +17,17 @@ public class BaseTest {
     // antes del test case 
     @BeforeMethod
     public void setUp() {
-        String browser = ConfigReader.get("browser").toLowerCase();
+        String browser = System.getProperty("browser", ConfigReader.get("browser"));
+        
+         // Validar el valor del navegador
+         if (browser == null || browser.isEmpty()) {
+            browser = "chrome"; // si no especifica navegador se ejecuta automaticamente en chrome 
+            System.out.println("NAVEGADOR NO ESPEFICIADO, USANDO CHROME");
+        } else {
+            browser = browser.toLowerCase();
+            System.out.println("EJECUTANDO PRUEBAS EN " + browser);
+        }
+        
         switch (browser) {
             case "chrome":
                 WebDriverManager.chromedriver().setup();
@@ -28,7 +38,7 @@ public class BaseTest {
                 driver = new FirefoxDriver();
                 break;
             default:
-                throw new IllegalArgumentException("Navegador no soportado: " + browser);
+            break;
         }
 
         //configuro wait implicito 

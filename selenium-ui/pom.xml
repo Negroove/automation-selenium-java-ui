@@ -88,6 +88,15 @@
           <artifactId>maven-project-info-reports-plugin</artifactId>
           <version>3.0.0</version>
         </plugin>
+         <plugin>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>3.5.2</version>
+            <configuration>
+               <systemPropertyVariables>
+                    <browser>${browser}</browser>
+                </systemPropertyVariables>
+            </configuration>
+        </plugin>
       </plugins>
     </pluginManagement>
   </build>
