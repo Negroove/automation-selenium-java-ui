@@ -1,6 +1,6 @@
 package pages;
 
-import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -18,19 +18,24 @@ public class CategoryPage extends BasePage {
     @FindBy(xpath = "//span[@class='ui-search-search-result__quantity-results']")
     private WebElement lblResults;
 
+    @FindBy(xpath = "//input[@data-testid='Minimum-price']")
+    private WebElement txtiMinimoPrecio;
+
+    @FindBy(xpath = "//input[@data-testid='Maximum-price']")
+    private WebElement txtiMaximoPrecio;
+
     // Constructor
     public CategoryPage(WebDriver driver) {
         super(driver);
     }
 
-    
-    public void anotherCategory(String tag, String text){
+    public void anotherCategory(String tag, String text) {
         WebElement terceraCategoria = findElementByText(tag, text);
         click(terceraCategoria);
     }
-    // region Métodos para Navegación de categoria, es imporante no equivocarse en
-    // el orden cuando se ingresan
 
+    // region Métodos para Navegación de categoria, es imporante no equivocarse enel
+    // orden cuando se ingresan
     public void navigateToCategory(String... categories) {
         // Comienza desde el botón de "Categorías"
         click(btnCategorias);
@@ -50,11 +55,35 @@ public class CategoryPage extends BasePage {
         return element.getText();
     }
 
+    public void applyPriceRangeFilter(String minPrice, String maxPrice) {
+        scrollToElement(txtiMinimoPrecio);
+
+        type(txtiMinimoPrecio, minPrice);
+
+        scrollToElement(txtiMaximoPrecio);
+
+        type(txtiMaximoPrecio, maxPrice);
+
+        txtiMaximoPrecio.sendKeys(Keys.ENTER);
+
+        waitForPageToLoad();
+    }
+
     // region Validaciones
+    // Validar que el total de resultados se actualice después de aplicar filtros
+    public void validateResultsUpdated(String initialTotal) {
+        waitForPageToLoad();
+        String updatedTotal = getTotalResults();
+        if (initialTotal.equals(updatedTotal)) {
+            throw new AssertionError("EL TOTAL DE LOS RESULTADO NO CAMBIO");
+        }
+        System.out.println("RESULTADOS ACTUALIZADOS:  " + updatedTotal);
+    }
+
     // valida el texto de un elemento
     public void validateTextByElement(String tag, String expectedText) {
         String actualText = getTextByElement(tag, expectedText);
-        Assert.assertEquals(actualText, expectedText, "El texto no coincide con el esperado.");
+        Assert.assertEquals(actualText, expectedText, "EL TEXTO NO COINCIDE");
     }
 
     // valida filtros de la pagina
@@ -79,10 +108,9 @@ public class CategoryPage extends BasePage {
     // obtiene el total de los resultados
     public String getTotalResults() {
         System.out.println("LOS RESULTADOS SON: " + lblResults.getText());
+        waitForElementToBeReady(lblResults);
         return lblResults.getText();
     }
-
     // endregion
 
-    // endregion
 }

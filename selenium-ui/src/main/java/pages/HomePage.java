@@ -6,8 +6,7 @@ import org.openqa.selenium.support.FindBy;
 
 public class HomePage extends BasePage {
 
-
-    // Botones menu principal 
+    // Botones menu principal
 
     @FindBy(xpath = "//a[normalize-space()='Ofertas']")
     private WebElement btnOfertas;
@@ -18,11 +17,14 @@ public class HomePage extends BasePage {
     @FindBy(xpath = "//a[@class='nav-menu-item-link'][normalize-space()='Supermercado']")
     private WebElement btnSupermercado;
 
+    @FindBy(xpath = "//a[@class='nav-menu-item-link'][normalize-space()='Moda']")
+    private WebElement btnModa;
+
     public HomePage(WebDriver driver) {
         super(driver);
     }
 
-    // navegar a ofertas 
+    // navegar a ofertas
     public void goToOffers() {
         click(btnOfertas);
     }
@@ -35,5 +37,10 @@ public class HomePage extends BasePage {
     // navegar a supermercado
     public void goToSupermarket() {
         click(btnSupermercado);
+    }
+
+    // navegar a supermercado
+    public void goToModa() {
+        click(btnModa);
     }
 }

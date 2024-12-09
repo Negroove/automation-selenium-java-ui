@@ -25,7 +25,7 @@ public class MercadoLibreTest extends BaseTest {
         categoryPage.validateCategoryTitle("h2", "Grifería para Baño");
     }
 
-    @Test(groups  = { "regresion" })
+    @Test(groups = { "regresion" })
     public void validarCategoriaSupermercado() {
         HomePage homePage = new HomePage(driver);
         CategoryPage categoryPage = new CategoryPage(driver);
@@ -43,11 +43,11 @@ public class MercadoLibreTest extends BaseTest {
         categoryPage.validateCategoryTitle("h1", "Cápsulas en Supermercado");
     }
 
-    @Test(groups = { "integracion" })
+    @Test(groups = { "regresion" })
     public void validarCategoriaOfertaDelDia() {
+        
         HomePage homePage = new HomePage(driver);
         CategoryPage categoryPage = new CategoryPage(driver);
-
         // 1. Navegar a ofertas del día
         homePage.goToOffers();
 
@@ -71,4 +71,46 @@ public class MercadoLibreTest extends BaseTest {
         categoryPage.validateCategoryTitle("span", "Celulares y Teléfonos");
         categoryPage.validateCategoryTitle("h2", "Accesorios para Celulares");
     }
+
+    @Test(groups = { "integracion" })
+    public void validarCategoriaSupermercadoFiltrosPrecio() {
+        HomePage homePage = new HomePage(driver);
+        CategoryPage categoryPage = new CategoryPage(driver);
+
+        homePage.goToSupermarket();
+
+        categoryPage.anotherCategory("span", "SALUDABLES");
+
+        // Extraer total inicial de resultados
+        String initialTotal = categoryPage.getTotalResults();
+        System.out.println("Resultados iniciales: " + initialTotal);
+
+        // Aplicar el filtro de rango de precios
+        categoryPage.applyPriceRangeFilter("10000", "15000");
+
+        // Validar que los resultados se hayan actualizado
+        categoryPage.validateResultsUpdated(initialTotal);
+    }
+
+    @Test(groups = { "integracion" })
+    public void validarCategoriaModaOfertasFiltrosPrecio() {
+        HomePage homePage = new HomePage(driver);
+        CategoryPage categoryPage = new CategoryPage(driver);
+
+        homePage.goToModa();
+
+        categoryPage.anotherCategory("span", "OFERTAS DEL DÍA");
+
+        // Extraer total inicial de resultados
+        String initialTotal = categoryPage.getTotalResults();
+        System.out.println("Resultados iniciales: " + initialTotal);
+
+        // Aplicar el filtro de rango de precios
+        categoryPage.applyPriceRangeFilter("10000", "15000");
+
+        // Validar que los resultados se hayan actualizado
+        categoryPage.validateResultsUpdated(initialTotal);
+    }
+
+
 }

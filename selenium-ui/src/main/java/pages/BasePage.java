@@ -22,7 +22,7 @@ public class BasePage {
         waitForPageToLoad();
     }
 
-    // elementos xpath simples 
+    // elementos xpath simples
     protected WebElement findElementByText(String tag, String text) {
         String xpath = "//" + tag + "[contains(text(),'" + text + "')]";
         waitForElementIsPresent(By.xpath(xpath));
@@ -43,7 +43,7 @@ public class BasePage {
     }
 
     protected void click(WebElement element) {
-        waitForPageToLoad();
+        waitForElementToBeReady(element);
         waitForClickeable(element);
         element.click();
     }
