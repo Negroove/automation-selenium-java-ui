@@ -15,7 +15,7 @@ public class BaseTest {
     protected WebDriver driver;
 
     // antes del test case 
-    @BeforeMethod
+    @BeforeMethod(alwaysRun = true)
     public void setUp() {
         String browser = System.getProperty("browser", ConfigReader.get("browser"));
         

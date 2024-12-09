@@ -5,31 +5,35 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
 public class HomePage extends BasePage {
-    
-    @FindBy(xpath = "//a[normalize-space()='Categorías']") 
-    private WebElement btnCategorias;
+
+
+    // Botones menu principal 
+
+    @FindBy(xpath = "//a[normalize-space()='Ofertas']")
+    private WebElement btnOfertas;
+
+    @FindBy(xpath = "//a[normalize-space()='Cupones']")
+    private WebElement btnCupones;
+
+    @FindBy(xpath = "//a[@class='nav-menu-item-link'][normalize-space()='Supermercado']")
+    private WebElement btnSupermercado;
 
     public HomePage(WebDriver driver) {
         super(driver);
-        waitForPageToLoad();
     }
 
-    // Navegar a la sección Ofertas
-    public void goToCategory(String categoria, String... subcategoria) {
-        // Abrir la sección de Categorías
-        click(btnCategorias);
+    // navegar a ofertas 
+    public void goToOffers() {
+        click(btnOfertas);
+    }
 
-        // Buscar la categoría principal
-        waitForElementIsPresent("a", categoria);
-        WebElement categoryElement = findElementByText("a", categoria);
-        click(categoryElement);
+    // navegar a cupones
+    public void goToCoupons() {
+        click(btnCupones);
+    }
 
-        // Si se especifica una subcategoría, navegar a ella
-        if (subcategoria.length > 0) {
-            WebElement subcategoryElement = findElementByText("h3", subcategoria[0]);
-            scrollToElement(subcategoryElement);
-            click(subcategoryElement);
-
-        }
+    // navegar a supermercado
+    public void goToSupermarket() {
+        click(btnSupermercado);
     }
 }

@@ -18,13 +18,13 @@ public class BasePage {
     public BasePage(WebDriver driver) {
         this.driver = driver;
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        waitForPageToLoad();
         PageFactory.initElements(driver, this);
+        waitForPageToLoad();
     }
 
     // elementos xpath simples 
     protected WebElement findElementByText(String tag, String text) {
-        String xpath = "//" + tag + "[normalize-space()='" + text + "']";
+        String xpath = "//" + tag + "[contains(text(),'" + text + "')]";
         waitForElementIsPresent(By.xpath(xpath));
         return driver.findElement(By.xpath(xpath));
     }

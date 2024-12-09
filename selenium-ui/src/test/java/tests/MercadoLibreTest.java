@@ -4,76 +4,71 @@ import base.BaseTest;
 import pages.CategoryPage;
 import pages.HomePage;
 
-import org.testng.Assert;
 import org.testng.annotations.Test;
 
 public class MercadoLibreTest extends BaseTest {
 
     @Test(groups = { "regresion" })
     public void validarCategoriaConstruccion() {
+        CategoryPage categoryPage = new CategoryPage(driver);
+
+        // 1. Navegar a la categoria
+        categoryPage.navigateToCategory("Construcción", "Baños y Sanitarios");
+
+        // 2. Navegar a la 3ra categoria
+        categoryPage.anotherCategory("span", "Grifería para Baño");
+
+        // 3. Validar filtros
+        categoryPage.validateFilters("Construcción", "Baños y Sanitarios");
+
+        // 4. Validar titulo de la categoria
+        categoryPage.validateCategoryTitle("h2", "Grifería para Baño");
+    }
+
+    @Test(groups  = { "regresion" })
+    public void validarCategoriaSupermercado() {
         HomePage homePage = new HomePage(driver);
         CategoryPage categoryPage = new CategoryPage(driver);
 
-        // El test se incia abriendo directmaente la direccion de mercadolibre desde la
-        // clase BaseTest
-        homePage.goToCategory("Construcción", "Baños y Sanitarios");
+        // 1. Navegar al supermercado desde el menu
+        homePage.goToSupermarket();
 
-        categoryPage.goTo3rdCategory("span", "Grifería para Baño");
+        // 2. Seleccionar subcategoria
+        categoryPage.anotherCategory("span", "CAPSULAS");
 
-        categoryPage.validateTextByElement("span", "Construcción");
-        categoryPage.validateTextByElement("span", "Baños y Sanitarios");
-        categoryPage.validateTextByElement("h2", "Grifería para Baño");
-        
+        // 3. Validar filtros
+        categoryPage.validateFilters("Alimentos y Bebidas", "Almacén", "Infusiones");
+
+        // 4. Validar titulo de la categoria
+        categoryPage.validateCategoryTitle("h1", "Cápsulas en Supermercado");
     }
 
-
-    @Test(groups = { "regresion" })
-    public void validarCategoriaConstruccion3() {
+    @Test(groups = { "integracion" })
+    public void validarCategoriaOfertaDelDia() {
         HomePage homePage = new HomePage(driver);
         CategoryPage categoryPage = new CategoryPage(driver);
 
-        // El test se incia abriendo directmaente la direccion de mercadolibre desde la
-        // clase BaseTest
-        homePage.goToCategory("Construcción", "Baños y Sanitarios");
+        // 1. Navegar a ofertas del día
+        homePage.goToOffers();
 
-        categoryPage.goTo3rdCategory("span", "Grifería para Baño");
+        categoryPage.anotherCategory("a", "Oferta del día");
 
-        categoryPage.validateTextByElement("span", "Construcción");
-        categoryPage.validateTextByElement("span", "Baños y Sanitarios");
-        categoryPage.validateTextByElement("h2", "Grifería para Baño");
-        
+        // 3. Validar título de la categoria
+        categoryPage.validateCategoryTitle("h1", "Todas");
     }
-    @Test(groups = { "regresion" })
-    public void validarCategoriaConstruccion2() {
-        HomePage homePage = new HomePage(driver);
+
+    @Test(groups = { "integracion" })
+    public void validarCategoriaTecnologia() {
         CategoryPage categoryPage = new CategoryPage(driver);
 
-        // El test se incia abriendo directmaente la direccion de mercadolibre desde la
-        // clase BaseTest
-        homePage.goToCategory("Construcción", "Baños y Sanitarios");
+        // 1. Navegar a tecnologia
+        categoryPage.navigateToCategory("Tecnología");
 
-        categoryPage.goTo3rdCategory("span", "Grifería para Baño");
+        // 2 . Accesorios para celulares
+        categoryPage.anotherCategory("a", "Accesorios para Celulares");
 
-        categoryPage.validateTextByElement("span", "Construcción");
-        categoryPage.validateTextByElement("span", "Baños y Sanitarios");
-        categoryPage.validateTextByElement("h2", "Grifería para Baño");
-        
+        // 3. Validar titulo de la categoria
+        categoryPage.validateCategoryTitle("span", "Celulares y Teléfonos");
+        categoryPage.validateCategoryTitle("h2", "Accesorios para Celulares");
     }
-    @Test(groups = { "regresion" })
-    public void validarCategoriaConstruccion1() {
-        HomePage homePage = new HomePage(driver);
-        CategoryPage categoryPage = new CategoryPage(driver);
-
-        // El test se incia abriendo directmaente la direccion de mercadolibre desde la
-        // clase BaseTest
-        homePage.goToCategory("Construcción", "Baños y Sanitarios");
-
-        categoryPage.goTo3rdCategory("span", "Grifería para Baño");
-
-        categoryPage.validateTextByElement("span", "Construcción");
-        categoryPage.validateTextByElement("span", "Baños y Sanitarios");
-        categoryPage.validateTextByElement("h2", "Grifería para Baño");
-        
-    }
-
 }
