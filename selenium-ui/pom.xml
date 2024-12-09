@@ -64,10 +64,6 @@
           <version>3.8.0</version>
         </plugin>
         <plugin>
-          <artifactId>maven-surefire-plugin</artifactId>
-          <version>2.22.1</version>
-        </plugin>
-        <plugin>
           <artifactId>maven-jar-plugin</artifactId>
           <version>3.0.2</version>
         </plugin>
@@ -92,7 +88,8 @@
             <artifactId>maven-surefire-plugin</artifactId>
             <version>3.5.2</version>
             <configuration>
-               <systemPropertyVariables>
+              <groups>${groups}</groups>
+              <systemPropertyVariables>
                     <browser>${browser}</browser>
                 </systemPropertyVariables>
             </configuration>

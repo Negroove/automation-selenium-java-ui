@@ -41,9 +41,6 @@ public class BaseTest {
             break;
         }
 
-        //configuro wait implicito 
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(ConfigReader.getInt("implicitWait")));
-
         //maximizo la ventana
         driver.manage().window().maximize();
 
