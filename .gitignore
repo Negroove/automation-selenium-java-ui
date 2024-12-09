@@ -1,4 +1,6 @@
 target/
+allure-results
+allure-report
 pom.xml.tag
 pom.xml.releaseBackup
 pom.xml.versionsBackup
