@@ -1,116 +1,76 @@
 package tests;
 
 import base.BaseTest;
-import pages.CategoryPage;
-import pages.HomePage;
-
+import io.qameta.allure.Description;
+import io.qameta.allure.Feature;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
+import steps.MercadoLibreSteps;
 
 public class MercadoLibreTest extends BaseTest {
 
-    @Test(groups = { "regresion" })
+    private MercadoLibreSteps steps;
+
+   @BeforeMethod(alwaysRun = true)
+    public void setUpSteps() {
+    steps = new MercadoLibreSteps(driver);
+    }
+
+    @Test(groups = {"regresion"})
+    @Feature("Validación de categorías")
+    @Description("Validar que la categoría de Construcción muestra correctamente sus filtros y títulos.")
     public void validarCategoriaConstruccion() {
-        CategoryPage categoryPage = new CategoryPage(driver);
-
-        // 1. Navegar a la categoria
-        categoryPage.navigateToCategory("Construcción", "Baños y Sanitarios");
-
-        // 2. Navegar a la 3ra categoria
-        categoryPage.anotherCategory("span", "Grifería para Baño");
-
-        // 3. Validar filtros
-        categoryPage.validateFilters("Construcción", "Baños y Sanitarios");
-
-        // 4. Validar titulo de la categoria
-        categoryPage.validateCategoryTitle("h2", "Grifería para Baño");
+        steps.navegarACategoria("Construcción", "Baños y Sanitarios");
+        steps.seleccionarCategoriaSecundaria("span","Grifería para Baño");
+        steps.validarFiltros("Construcción", "Baños y Sanitarios");
+        steps.validarTituloDeCategoria("h2", "Grifería para Baño");
     }
 
-    @Test(groups = { "regresion" })
+    @Test(groups = {"regresion"})
+    @Feature("Validación de categorías")
+    @Description("Validar que la categoría de Supermercado muestra correctamente sus filtros y títulos.")
     public void validarCategoriaSupermercado() {
-        HomePage homePage = new HomePage(driver);
-        CategoryPage categoryPage = new CategoryPage(driver);
-
-        // 1. Navegar al supermercado desde el menu
-        homePage.goToSupermarket();
-
-        // 2. Seleccionar subcategoria
-        categoryPage.anotherCategory("span", "CAPSULAS");
-
-        // 3. Validar filtros
-        categoryPage.validateFilters("Alimentos y Bebidas", "Almacén", "Infusiones");
-
-        // 4. Validar titulo de la categoria
-        categoryPage.validateCategoryTitle("h1", "Cápsulas en Supermercado");
+        steps.navegarAlSupermercado();
+        steps.seleccionarCategoriaSecundaria("span","CAPSULAS");
+        steps.validarFiltros("Alimentos y Bebidas", "Almacén", "Infusiones");
+        steps.validarTituloDeCategoria("h1", "Cápsulas en Supermercado");
     }
 
-    @Test(groups = { "regresion" })
+    @Test(groups = {"regresion"})
+    @Feature("Validación de categorías")
+    @Description("Validar que la sección de ofertas del día muestra correctamente el título de la categoría.")
     public void validarCategoriaOfertaDelDia() {
-        
-        HomePage homePage = new HomePage(driver);
-        CategoryPage categoryPage = new CategoryPage(driver);
-        // 1. Navegar a ofertas del día
-        homePage.goToOffers();
-
-        categoryPage.anotherCategory("a", "Oferta del día");
-
-        // 3. Validar título de la categoria
-        categoryPage.validateCategoryTitle("h1", "Todas");
+        steps.navegarAOfertasDelDia();
+        steps.seleccionarCategoriaSecundaria("a","Oferta del día");
+        steps.validarTituloDeCategoria("h1", "Todas");
     }
 
-    @Test(groups = { "integracion" })
+    @Test(groups = {"integracion"})
+    @Feature("Validación de categorías")
+    @Description("Validar que la categoría Tecnología muestra correctamente sus subcategorías y títulos.")
     public void validarCategoriaTecnologia() {
-        CategoryPage categoryPage = new CategoryPage(driver);
-
-        // 1. Navegar a tecnologia
-        categoryPage.navigateToCategory("Tecnología");
-
-        // 2 . Accesorios para celulares
-        categoryPage.anotherCategory("a", "Accesorios para Celulares");
-
-        // 3. Validar titulo de la categoria
-        categoryPage.validateCategoryTitle("span", "Celulares y Teléfonos");
-        categoryPage.validateCategoryTitle("h2", "Accesorios para Celulares");
+        steps.navegarACategoria("Tecnología");
+        steps.seleccionarCategoriaSecundaria("a","Accesorios para Celulares");
+        steps.validarTituloDeCategoria("span", "Celulares y Teléfonos");
+        steps.validarTituloDeCategoria("h2", "Accesorios para Celulares");
     }
 
-    @Test(groups = { "integracion" })
+    @Test(groups = {"precio"})
+    @Feature("Validación de filtros de precio")
+    @Description("Validar que los filtros de rango de precio en Supermercado funcionan correctamente.")
     public void validarCategoriaSupermercadoFiltrosPrecio() {
-        HomePage homePage = new HomePage(driver);
-        CategoryPage categoryPage = new CategoryPage(driver);
-
-        homePage.goToSupermarket();
-
-        categoryPage.anotherCategory("span", "SALUDABLES");
-
-        // Extraer total inicial de resultados
-        String initialTotal = categoryPage.getTotalResults();
-        System.out.println("Resultados iniciales: " + initialTotal);
-
-        // Aplicar el filtro de rango de precios
-        categoryPage.applyPriceRangeFilter("10000", "15000");
-
-        // Validar que los resultados se hayan actualizado
-        categoryPage.validateResultsUpdated(initialTotal);
+        steps.navegarAlSupermercado();
+        steps.seleccionarCategoriaSecundaria("span","SALUDABLES");
+        steps.aplicarFiltroDePrecioYValidarResultados("10000", "15000");
     }
 
-    @Test(groups = { "integracion" })
+    @Test(groups = {"precio"})
+    @Feature("Validación de filtros de precio")
+    @Description("Validar que los filtros de rango de precio en Moda funcionan correctamente.")
     public void validarCategoriaModaOfertasFiltrosPrecio() {
-        HomePage homePage = new HomePage(driver);
-        CategoryPage categoryPage = new CategoryPage(driver);
-
-        homePage.goToModa();
-
-        categoryPage.anotherCategory("span", "OFERTAS DEL DÍA");
-
-        // Extraer total inicial de resultados
-        String initialTotal = categoryPage.getTotalResults();
-        System.out.println("Resultados iniciales: " + initialTotal);
-
-        // Aplicar el filtro de rango de precios
-        categoryPage.applyPriceRangeFilter("10000", "15000");
-
-        // Validar que los resultados se hayan actualizado
-        categoryPage.validateResultsUpdated(initialTotal);
+        steps.navegarAModa();
+        steps.seleccionarCategoriaSecundaria("span","OFERTAS DEL DÍA");
+        steps.aplicarFiltroDePrecioYValidarResultados("10000", "11000");
     }
-
-
 }

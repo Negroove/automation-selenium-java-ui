@@ -30,8 +30,8 @@ public class CategoryPage extends BasePage {
     }
 
     public void anotherCategory(String tag, String text) {
-        WebElement terceraCategoria = findElementByText(tag, text);
-        click(terceraCategoria);
+        WebElement otraCategoria = findElementByText(tag, text);
+        click(otraCategoria);
     }
 
     // region Métodos para Navegación de categoria, es imporante no equivocarse enel

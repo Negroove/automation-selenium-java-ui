@@ -1,5 +1,6 @@
 package base;
 
+
 import java.time.Duration;
 
 import org.openqa.selenium.WebDriver;
@@ -41,6 +42,8 @@ public class BaseTest {
             break;
         }
 
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+
         //maximizo la ventana
         driver.manage().window().maximize();
 
@@ -49,7 +52,8 @@ public class BaseTest {
     }
 
     // despues del test case 
-    @AfterMethod
+    
+    @AfterMethod(alwaysRun = true)
     public void tearDown() {
         if (driver != null) {
             driver.quit();
