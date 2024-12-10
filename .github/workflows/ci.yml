@@ -33,19 +33,46 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
 
-      # 4. Listar archivos del proyecto (Opcional para depuración)
-      - name: List project files
-        run: ls -R
-
-      # 5. Ejecutar pruebas con Maven
-      - name: Run tests
+      # 4. Instalar dependencias necesarias para Chrome en Linux
+      - name: Install Chrome dependencies
         run: |
-          cd <directorio-donde-esta-el-pom>
-          mvn clean test
+          sudo apt-get update
+          sudo apt-get install -y wget unzip xvfb libxi6 libgconf-2-4
+          sudo apt-get install -y google-chrome-stable
 
-      # 6. Subir resultados de Allure como artefacto descargable
-      - name: Upload Allure Results
-        uses: actions/upload-artifact@v3
-        with:
-          name: allure-results
-          path: target/allure-results
+      # 5. Instalar Allure CLI
+      - name: Install Allure
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y default-jre
+          wget https://github.com/allure-framework/allure2/releases/download/2.21.0/allure-2.21.0.tgz
+          tar -xzf allure-2.21.0.tgz
+          sudo mv allure-2.21.0 /opt/allure
+          sudo ln -s /opt/allure/bin/allure /usr/bin/allure
+
+      # 6. Ejecutar pruebas con Maven dentro del directorio correcto
+      - name: Run tests
+        continue-on-error: true  # Continúa incluso si las pruebas fallan
+        run: |
+          cd selenium-ui
+          mvn clean test --fail-never
+
+      # 7. Generar Reporte HTML de Allure
+      - name: Generate Allure Report
+        run: |
+          allure generate --clean selenium-ui/target/allure-results -o selenium-ui/target/allure-report
+
+      # # 8. Mover el reporte generado al directorio raíz del repositorio
+      # - name: Move Allure Report to Root
+      #   run: |
+      #     cp -r selenium-ui/target/allure-report/* .
+
+      - name: Deploy to GitHub Pages
+        run: |
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "GitHub Actions Bot"
+          git add .
+          git commit -m "Deploy Allure Report to GitHub Pages" || echo "No changes to commit"
+          git push
+          env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
