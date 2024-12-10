@@ -53,13 +53,13 @@ jobs:
         run: |
           allure generate --clean selenium-ui/target/allure-results -o docs
 
-      # 7. Commit y push directo a la rama `pruebaDespliegue`
+      # 7. Commit y push directo a la rama `master`
       - name: Deploy to GitHub Pages
         run: |
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git config --global user.name "GitHub Actions Bot"
           git add docs
           git commit -m "Deploy Allure Report to GitHub Pages" || echo "No changes to commit"
-          git push origin pruebaDespliegue
+          git push origin master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
