@@ -125,12 +125,17 @@ mvn clean test -Dbrowser=chrome -Dheadless=true
 
 ### Generar Reporte de Allure
 ```bash
-allure generate --clean selenium-ui/target/allure-results -o docs
+allure generate --clean target/allure-results -o target/allure-report
 ```
 
 ### Visualizar Reporte Localmente
 ```bash
-allure serve selenium-ui/target/allure-results
+allure open target/allure-report
+```
+
+### Levantar directamente el reporte sin generarlo
+```bash
+allure serve target/allure-results
 ```
 
 ### Reportes en GitHub Pages
