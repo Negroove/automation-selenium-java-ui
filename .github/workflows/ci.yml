@@ -3,10 +3,10 @@ name: CI Allure Report
 on:
   push:
     branches:
-      - pruebaDespliegue
+      - master
   pull_request:
     branches:
-      - pruebaDespliegue
+      - master
 
 jobs:
   build:
