@@ -24,23 +24,14 @@ jobs:
           distribution: 'temurin'
           java-version: '21'
 
-      # 3. Cachear dependencias de Maven
-      - name: Cache Maven dependencies
-        uses: actions/cache@v3
-        with:
-          path: ~/.m2
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-maven-
-
-      # 4. Instalar dependencias necesarias para Chrome en Linux
+      # 3. Instalar dependencias necesarias para Chrome en Linux
       - name: Install Chrome dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y wget unzip xvfb libxi6 libgconf-2-4
           sudo apt-get install -y google-chrome-stable
 
-      # 5. Instalar Allure CLI
+      # 4. Instalar Allure CLI
       - name: Install Allure
         run: |
           sudo apt-get update
@@ -50,29 +41,29 @@ jobs:
           sudo mv allure-2.21.0 /opt/allure
           sudo ln -s /opt/allure/bin/allure /usr/bin/allure
 
-      # 6. Ejecutar pruebas con Maven dentro del directorio correcto
+      # 5. Ejecutar pruebas con Maven
       - name: Run tests
-        continue-on-error: true  # Continúa incluso si las pruebas fallan
+        continue-on-error: true
         run: |
           cd selenium-ui
           mvn clean test --fail-never
 
-      # 7. Generar Reporte HTML de Allure
+      # 6. Generar el reporte de Allure
       - name: Generate Allure Report
         run: |
-          allure generate --clean selenium-ui/target/allure-results -o selenium-ui/target/allure-report
+          allure generate --clean selenium-ui/target/allure-results -o allure-report
 
-      # # 8. Mover el reporte generado al directorio raíz del repositorio
-      # - name: Move Allure Report to Root
-      #   run: |
-      #     cp -r selenium-ui/target/allure-report/* .
-
-      - name: Deploy to GitHub Pages
+      # 7. Publicar en el branch `gh-pages`
+      - name: Deploy to gh-pages
         run: |
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git config --global user.name "GitHub Actions Bot"
+          git fetch origin gh-pages
+          git checkout gh-pages || git checkout --orphan gh-pages
+          rm -rf *
+          cp -r allure-report/* .
           git add .
           git commit -m "Deploy Allure Report to GitHub Pages" || echo "No changes to commit"
-          git push
-          env:
+          git push origin gh-pages
+        env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
