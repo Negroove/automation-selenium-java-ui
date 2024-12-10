@@ -33,11 +33,17 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
 
-      # 4. Ejecutar pruebas con Maven
-      - name: Run tests
-        run: mvn clean test
+      # 4. Listar archivos del proyecto (Opcional para depuración)
+      - name: List project files
+        run: ls -R
 
-      # 5. Subir resultados de Allure como artefacto descargable
+      # 5. Ejecutar pruebas con Maven
+      - name: Run tests
+        run: |
+          cd <directorio-donde-esta-el-pom>
+          mvn clean test
+
+      # 6. Subir resultados de Allure como artefacto descargable
       - name: Upload Allure Results
         uses: actions/upload-artifact@v3
         with:
