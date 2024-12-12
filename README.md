@@ -18,10 +18,10 @@ automation-selenium-java-ui/
 │   ├── src/
 │   │   ├── main/
 │   │   │   ├── java/
-│   │   │   │   ├── base/        # Clases base para la configuración del driver y reutilización de lógica
-│   │   │   │   │   ├── BasePage.java
+│   │   │   │   ├── base/        # Clases base para la configuración del driver
 │   │   │   │   │   └── BaseTest.java
 │   │   │   │   ├── pages/       # Clases que representan las páginas del sistema bajo prueba
+│   │   │   │   │   ├── BasePage.java
 │   │   │   │   │   ├── CategoryPage.java
 │   │   │   │   │   ├── HomePage.java
 │   │   │   │   │   └── ...
